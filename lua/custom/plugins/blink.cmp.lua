@@ -1,6 +1,10 @@
 -- lua/custom/plugins/blink.cmp.lua
 -- Autocompletion
+-- Also configures windsurf / Codeium for autocompletion
+-- Note: replaced windsurf.nvim with codeium.nvim temporarily. Revert back later.
+-- 
 return {
+  {
     'saghen/blink.cmp',
     enabled = true,
     event = 'VimEnter',
@@ -33,6 +37,7 @@ return {
         opts = {},
       },
       'folke/lazydev.nvim',
+      --  'Exafunction/codeium.nvim', -- codeium to be used for virtual text only elsewhere.
     },
     --- @module 'blink.cmp'
     --- @type blink.cmp.Config
@@ -78,9 +83,11 @@ return {
       },
 
       sources = {
-        default = { 'lsp', 'path', 'snippets', 'lazydev' },
+        -- removed codeium from the default list.
+        default = { 'lsp', 'path', 'snippets', 'lazydev', 'buffer' },
         providers = {
           lazydev = { module = 'lazydev.integrations.blink', score_offset = 100 },
+          -- codeium = { name = 'Codeium', module = 'codeium.blink', async = true },
         },
       },
 
@@ -97,5 +104,70 @@ return {
 
       -- Shows a signature help window while you type arguments for a function
       signature = { enabled = true },
+    }
+  },
+  {
+    "Exafunction/codeium.nvim",
+    enabled = true,    -- Enable this for AI Auto completion!!!
+    branch = "main",    -- Recommended: Use main branch for latest protocol fixes
+    dependencies = {
+        "nvim-lua/plenary.nvim",
     },
+    config = function()
+      require("codeium").setup({
+        -- Disable cmp (i.e. nvim-cmp) since we use blink.cmp
+        enable_cmp_source = false,   -- we strictly use this for virtual text
+        virtual_text = {
+            enabled = true,
+
+            -- These are the defaults
+
+            -- Set to true if you never want completions to be shown automatically.
+            manual = false,
+            -- A mapping of filetype to true or false, to enable virtual text.
+            filetypes = {
+              markdown = false,
+            },
+            -- Whether to enable virtual text of not for filetypes not specifically listed above.
+            default_filetype_enabled = true,
+            -- How long to wait (in ms) before requesting completions after typing stops.
+            idle_delay = 75,
+            -- Priority of the virtual text. This usually ensures that the completions appear on top of
+            -- other plugins that also add virtual text, such as LSP inlay hints, but can be modified if
+            -- desired.
+            virtual_text_priority = 65535,
+            -- Set to false to disable all key bindings for managing completions.
+            map_keys = true,
+            -- The key to press when hitting the accept keybinding but no completion is showing.
+            -- Defaults to \t normally or <c-n> when a popup is showing.
+            accept_fallback = nil,
+            -- Key bindings for managing completions in virtual text mode.
+            key_bindings = {
+                -- Accept the current completion.
+                accept = "<Tab>",
+                -- Accept the next word.
+                accept_word = false,
+                -- Accept the next line.
+                accept_line = false,
+                -- Clear the virtual text.
+                clear = false,
+                -- Cycle to the next completion.
+                next = "<M-]>",
+                -- Cycle to the previous completion.
+                prev = "<M-[>",
+            }
+        }
+      })
+      vim.api.nvim_create_user_command("Cm", function()
+        vim.cmd("Codeium")
+      end, { desc = "Alias: Codeium" })
+    end
+  },
 }
+
+-- windsurf Notes:
+-- https://raw.githubusercontent.com/Exafunction/windsurf.vim/refs/heads/main/README.md
+
+-- :Codeium Chat
+-- :Cm Chat
+--

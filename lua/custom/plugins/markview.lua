@@ -1,7 +1,8 @@
 -- lua/custom/plugins/markview.lua
--- plugins/markview.lua
+
 return {
   "OXY2DEV/markview.nvim",
+  enabled = false,
   lazy = false, -- recommended
   dependencies = {
     "nvim-treesitter/nvim-treesitter",

@@ -978,7 +978,8 @@ require('lazy').setup({
 -- Set random colorscheme
 
 math.randomseed(vim.loop.now())
-local colorschemes = { "nightfox", "duskfox", "tokyonight", "catppuccin", "terafox", "nordfox" }
+-- local colorschemes = { "nightfox", "duskfox", "tokyonight", "catppuccin", "terafox", "nordfox" }
+local colorschemes = { "tokyonight-storm" }
 local chosen = colorschemes[math.random(#colorschemes)]
 
 vim.cmd.colorscheme(chosen)
