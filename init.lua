@@ -996,5 +996,8 @@ vim.cmd [[
 
 vim.cmd 'source $HOME/.config/kickstart-nvim/vimrc.vim'
 
+-- <leader>i : popup with leader keys, search and g! (bang.nvim) conventions
+require 'custom.keyhelp'
+
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
