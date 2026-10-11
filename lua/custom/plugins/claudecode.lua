@@ -2,7 +2,16 @@ return {
   {
     "coder/claudecode.nvim",
     dependencies = { "folke/snacks.nvim" },
-    config = true,
+    -- Nothing starts until a <leader>a* key or :ClaudeCode* command is used:
+    -- no WebSocket server, no ~/.claude/ide lock file, no claude process.
+    -- One Claude session per nvim instance, started in nvim's cwd.
+    opts = {
+      -- Wrapper: Pro login (unsets ANTHROPIC_API_KEY), global CLAUDE.md only
+      -- (project CLAUDE.md skipped), and "focus on the buffer, don't explore".
+      terminal_cmd = vim.fn.expand '~/bin/claude-lite',
+      -- Jump to the Claude split after <leader>as / <leader>ab
+      focus_after_send = true,
+    },
     -- `cmd` lets lazy.nvim create command stubs that load the plugin on first use,
     -- so `:ClaudeCode` and friends work on a fresh start. Without it, a keys-only
     -- spec defers loading until a <leader>a* mapping is pressed and the commands

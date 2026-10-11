@@ -28,6 +28,14 @@ function M.show()
     '- `:Bang! cmd`  write output even if cmd fails (diff, grep)',
     '- `.`           repeat last g!',
     '',
+    '## Claude Code (claudecode.nvim, split on the right)',
+    '- `' .. leader .. 'ac` toggle Claude   `' .. leader .. 'af` focus   `' .. leader .. 'am` model',
+    '- `' .. leader .. 'as` (Visual) send selection   `' .. leader .. 'ab` add buffer',
+    '- `' .. leader .. 'aa` accept diff   `' .. leader .. 'ad` deny diff',
+    '- `' .. leader .. 'ar` resume   `' .. leader .. 'aC` continue last session',
+    '- In terminal: `<C-\\><C-n>` Normal mode, `<C-w>h` back to code',
+    '- One-shot: `g!` + `claude-lite -p "…"` replaces selection',
+    '',
     'Press q or <Esc> to close',
   }
 
