@@ -13,14 +13,14 @@ return {
       sections = {
         lualine_a = {},
         lualine_b = {"branch", "diff"},
-        lualine_c = {"filename"},
+        lualine_c = {{"filename", path = 1}},
         lualine_x = {
           -- no encoding e.g. utf-8
           -- no fileformat e.g. unix, dos
           { "filetype", icon_only = false }
         },
         lualine_y = { 'progress', current_colorscheme },
-        lualine_z = { 'location' }
+        lualine_z = { '%l/%L:%c' } -- line/total-lines:column
       },
     })
     vim.api.nvim_create_autocmd("ColorScheme", {

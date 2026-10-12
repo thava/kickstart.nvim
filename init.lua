@@ -166,6 +166,34 @@ vim.o.inccommand = 'split'
 -- Minimal number of screen lines to keep above and below the cursor.
 vim.o.scrolloff = 2
 
+-- Nvim 0.12+ reports progress (e.g. on :w) with the OSC 9;4 terminal sequence.
+-- iTerm2 3.4 treats any OSC 9 as "post a notification", so every write beeps
+-- and pops a system alert. Drop the built-in progress autocmd under iTerm.
+if vim.env.TERM_PROGRAM == 'iTerm.app' then
+  pcall(vim.api.nvim_del_augroup_by_name, 'nvim.progress')
+end
+
+-- Disabled: lualine shows the relative path now. Uncomment to also echo it on switch.
+-- Show file info (like CTRL-G: path, lines, position) when entering a file
+-- buffer, so files with the same name in different dirs are distinguishable.
+-- Not via `shortmess-=F`: that also reports plugin buffers (e.g. Telescope's
+-- "[Prompt]") and shows the message twice.
+-- vim.api.nvim_create_autocmd('BufEnter', {
+--   desc = 'Show file info on buffer switch',
+--   group = vim.api.nvim_create_augroup('show-file-info', { clear = true }),
+--   callback = function(ev)
+--     if vim.bo[ev.buf].buftype ~= '' or ev.file == '' then
+--       return
+--     end
+--     -- Deferred so it lands after plugin windows (Telescope) close
+--     vim.schedule(function()
+--       if vim.api.nvim_get_current_buf() == ev.buf then
+--         vim.cmd 'file'
+--       end
+--     end)
+--   end,
+-- })
+
 -- if performing an operation that would fail due to unsaved changes in the buffer (like `:q`),
 -- instead raise a dialog asking if you wish to save the current file(s)
 -- See `:help 'confirm'`
