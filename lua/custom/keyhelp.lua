@@ -8,37 +8,8 @@ local function show_key(k)
   return (k:gsub(' ', '<Space>'))
 end
 
-function M.show()
-  local leader = show_key(vim.g.mapleader)
-  local localleader = show_key(vim.g.maplocalleader)
-
-  local lines = {
-    '# Key conventions',
-    '',
-    '- Global leader: `' .. leader .. '`',
-    '- Local leader:  `' .. localleader .. '`',
-    '',
-    '## Search',
-    '- `' .. leader .. 's…` Telescope search (sf files, sg grep, sh help, sk keymaps, sb buffers)',
-    '',
-    '## Buffer transformation (bang.nvim)',
-    '- `g!{motion}`  filter motion/text object through a shell cmd (e.g. `g!ip` sort)',
-    '- `{Visual}g!`  filter selection (charwise, linewise, or block)',
-    '- `g!!`         filter current line (`[count]g!!` for N lines)',
-    '- `:Bang! cmd`  write output even if cmd fails (diff, grep)',
-    '- `.`           repeat last g!',
-    '',
-    '## Claude Code (claudecode.nvim, split on the right)',
-    '- `' .. leader .. 'ac` toggle Claude   `' .. leader .. 'af` focus   `' .. leader .. 'am` model',
-    '- `' .. leader .. 'as` (Visual) send selection   `' .. leader .. 'ab` add buffer',
-    '- `' .. leader .. 'aa` accept diff   `' .. leader .. 'ad` deny diff',
-    '- `' .. leader .. 'ar` resume   `' .. leader .. 'aC` continue last session',
-    '- In terminal: `<C-\\><C-n>` Normal mode, `<C-w>h` back to code',
-    '- One-shot: `g!` + `claude-lite -p "…"` replaces selection',
-    '',
-    'Press q or <Esc> to close',
-  }
-
+-- Centered, read-only markdown float; q or <Esc> closes it.
+function M.popup(lines, title)
   local buf = vim.api.nvim_create_buf(false, true)
   vim.api.nvim_buf_set_lines(buf, 0, -1, false, lines)
   vim.bo[buf].filetype = 'markdown'
@@ -60,7 +31,7 @@ function M.show()
     col = math.floor((vim.o.columns - width) / 2),
     style = 'minimal',
     border = 'rounded',
-    title = ' Help ',
+    title = title,
     title_pos = 'center',
   })
   vim.wo[win].conceallevel = 2
@@ -70,6 +41,39 @@ function M.show()
       vim.api.nvim_win_close(win, true)
     end, { buffer = buf, nowait = true })
   end
+end
+
+function M.show()
+  local leader = show_key(vim.g.mapleader)
+  local localleader = show_key(vim.g.maplocalleader)
+
+  local lines = {
+    '# Key conventions',
+    '',
+    '- Global leader: `' .. leader .. '`',
+    '- Local leader:  `' .. localleader .. '`',
+    '',
+    '## Search',
+    '- `' .. leader .. 's…` Telescope search (sf files, sg grep, sh help, sk keymaps, sb buffers)',
+    '',
+    '## Buffer transformation (bang.nvim)',
+    '- `g!{motion}`  filter motion/text object through a shell cmd (e.g. `g!ip` sort)',
+    '- `{Visual}g!`  filter selection (charwise, linewise, or block)',
+    '- `g!!`         filter current line (`[count]g!!` for N lines)',
+    '- `:Bang! cmd`  write output even if cmd fails (diff, grep)',
+    '- `.`           repeat last g!',
+    '',
+    '## Claude Code (claudecode.nvim, Claude runs in your own terminal)',
+    '- `' .. leader .. 'ac` show port + copy `claude-lite` connect command to clipboard',
+    '- `' .. leader .. 'as` (Visual) send selection   `' .. leader .. 'ab` add buffer',
+    '- `' .. leader .. 'aa` accept diff   `' .. leader .. 'ad` deny diff',
+    '- In claude-lite: `/ide` lists running nvims; add `--resume`/`--continue` to reopen',
+    '- One-shot: `g!` + `claude-lite -p "…"` replaces selection',
+    '',
+    'Press q or <Esc> to close',
+  }
+
+  M.popup(lines, ' Help ')
 end
 
 vim.keymap.set('n', '<leader>i', M.show, { desc = 'Show key conventions [I]nfo' })
