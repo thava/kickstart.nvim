@@ -32,6 +32,14 @@ return {
           end
         end, { desc = 'Jump to previous git [c]hange' })
 
+        -- ]h / [h: same as ]c / [c, named after "hunk"
+        map('n', ']h', function()
+          gitsigns.nav_hunk 'next'
+        end, { desc = 'Jump to next git [h]unk' })
+        map('n', '[h', function()
+          gitsigns.nav_hunk 'prev'
+        end, { desc = 'Jump to previous git [h]unk' })
+
         -- Actions
         -- visual mode
         map('v', '<leader>hs', function()
