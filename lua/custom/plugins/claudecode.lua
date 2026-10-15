@@ -1,4 +1,4 @@
--- Show how to connect an externally started claude-lite to this nvim.
+-- Show how to connect an externally started claude-ide to this nvim.
 -- The plugin never launches Claude itself (terminal.provider = "none").
 local function show_connect_info()
   local cc = require 'claudecode'
@@ -7,7 +7,7 @@ local function show_connect_info()
   end
   local port = cc.state.port
   local cwd = vim.fn.getcwd()
-  local cmd = string.format('cd %s && CLAUDE_CODE_SSE_PORT=%d ENABLE_IDE_INTEGRATION=true claude-lite', vim.fn.shellescape(cwd), port)
+  local cmd = string.format('cd %s && CLAUDE_CODE_SSE_PORT=%d ENABLE_IDE_INTEGRATION=true claude-ide', vim.fn.shellescape(cwd), port)
   vim.fn.setreg('+', cmd)
 
   require('custom.keyhelp').popup({
@@ -19,7 +19,7 @@ local function show_connect_info()
     '**Copied to clipboard** (paste in iTerm; add `--resume`/`--continue` if wanted):',
     '`' .. cmd .. '`',
     '',
-    'Or run `claude-lite` in ' .. cwd,
+    'Or run `claude-ide` in ' .. cwd,
     'and type `/ide`, then pick Neovim with that folder.',
   }, ' Claude connect ')
 end
@@ -30,7 +30,7 @@ return {
     -- Nothing starts until a <leader>a* key or :ClaudeCode* command is used:
     -- no WebSocket server, no ~/.claude/ide lock file, no claude process.
     opts = {
-      -- Claude runs in my own terminal (iTerm), started with ~/bin/claude-lite:
+      -- Claude runs in my own terminal (iTerm), started with ~/bin/claude-ide:
       -- Pro login (unsets ANTHROPIC_API_KEY), global CLAUDE.md only, and
       -- "focus on the buffer, don't explore". <leader>ac shows how to connect.
       terminal = { provider = "none" },

@@ -19,7 +19,8 @@ return {
           -- no fileformat e.g. unix, dos
           { "filetype", icon_only = false }
         },
-        lualine_y = { 'progress', current_colorscheme },
+        -- lualine_y = { 'progress', current_colorscheme },
+        lualine_y = { 'progress' },
         lualine_z = { '%l/%L:%c' } -- line/total-lines:column
       },
     })
