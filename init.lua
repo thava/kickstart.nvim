@@ -881,6 +881,26 @@ require('lazy').setup({
         styles = {
           comments = { italic = false }, -- Disable italics in comments
         },
+        on_highlights = function(hl, c)
+          -- Softer, lower-glare colours. Format: before -> after (contrast vs storm bg #24283b).
+
+          -- Normal, NormalNC, @variable: #c0caf5 -> #a9c2cc muted grey-teal (9.0 -> 7.8).
+          -- Greyer/bluer than @property #73daca; avoids purple/magenta used by keywords.
+          local fg = '#a9c2cc'
+          hl.Normal = { fg = fg, bg = c.bg }
+          hl.NormalNC = { fg = fg, bg = c.bg }
+          hl['@variable'] = { fg = fg }
+
+          -- String: #9ece6a -> #a3be8c desaturated sage green (8.0 -> 7.1).
+          hl.String = { fg = '#a3be8c' }
+
+          -- Comment (@comment links here): #565f89 -> #8089b3 same hue, brighter (2.4 -> 4.3).
+          hl.Comment = { fg = '#8089b3', italic = false }
+
+          -- @markup.raw.block.markdown (fenced block text without a language parser):
+          -- inherited String #9ece6a -> #c8a2b8 dusty pink (8.0 -> 6.5).
+          hl['@markup.raw.block.markdown'] = { fg = '#c8a2b8' }
+        end,
       }
 
       -- Load the colorscheme here.
