@@ -900,6 +900,10 @@ require('lazy').setup({
           -- @markup.raw.block.markdown (fenced block text without a language parser):
           -- inherited String #9ece6a -> #c8a2b8 dusty pink (8.0 -> 6.5).
           hl['@markup.raw.block.markdown'] = { fg = '#c8a2b8' }
+
+          -- @markup.raw.markdown_inline (`inline code`): keep blue fg, drop the
+          -- terminal_black background. RenderMarkdownCodeInline links here too.
+          hl['@markup.raw.markdown_inline'] = { fg = c.blue }
         end,
       }
 
