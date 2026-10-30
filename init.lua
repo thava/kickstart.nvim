@@ -413,6 +413,16 @@ require('lazy').setup({
         { '<leader>s', group = '[S]earch' },
         { '<leader>t', group = '[T]oggle' },
         { '<leader>h', group = 'Git [H]unk', mode = { 'n', 'v' } },
+        { '<leader>g', group = '[G]oto (LSP)', mode = { 'n', 'x' } },
+        -- Go back after a jump (tag stack); not LSP-specific, so mapped globally.
+        { 'gb', '<C-t>', desc = '[G]o [B]ack (tag stack)' },
+        { 'gB', '<cmd>tag<cr>', desc = '[G]o Forward (tag stack)' },
+      },
+
+      -- Keep the popup a steady size: the classic preset's min height is 4,
+      -- so short key lists shrank the window. Show at least 10 rows.
+      win = {
+        height = { min = 10, max = 25 },
       },
     },
   },
@@ -641,6 +651,18 @@ require('lazy').setup({
           --  Useful when you're not sure what type a variable is and you want to see
           --  the definition of its *type*, not where it was *defined*.
           map('grt', require('telescope.builtin').lsp_type_definitions, '[G]oto [T]ype Definition')
+
+          -- Same LSP actions grouped under <leader>g (ttg...), so which-key lists them together.
+          local tb = require 'telescope.builtin'
+          map('<leader>gd', tb.lsp_definitions, '[G]oto [D]efinition')
+          map('<leader>gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
+          map('<leader>gr', tb.lsp_references, '[G]oto [R]eferences')
+          map('<leader>gi', tb.lsp_implementations, '[G]oto [I]mplementation')
+          map('<leader>gy', tb.lsp_type_definitions, '[G]oto T[y]pe Definition')
+          map('<leader>gK', vim.lsp.buf.hover, 'Hover Documentation')
+          map('<leader>ga', vim.lsp.buf.code_action, 'Code [A]ction', { 'n', 'x' })
+          map('<leader>gs', tb.lsp_document_symbols, 'Document [S]ymbols')
+          map('<leader>gS', tb.lsp_dynamic_workspace_symbols, 'Workspace [S]ymbols')
 
           -- This function resolves a difference between neovim nightly (version 0.11) and stable (version 0.10)
           ---@param client vim.lsp.Client
