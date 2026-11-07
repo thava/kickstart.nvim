@@ -209,6 +209,11 @@ vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 -- Diagnostic keymaps
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
 
+vim.keymap.set('n', '<leader>cd', function()
+    vim.cmd('lcd %:p:h')
+    vim.cmd('pwd') -- Optional: display the current path to confirm
+end, { desc = 'Switch to current file directory' })
+
 -- Use :terminal to open a terminal window
 -- You can edit the contents of the terminal buffer using vim keybindings.
 -- Exit terminal (insert) mode to normal edit mode with <Esc><Esc>.
